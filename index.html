@@ -36,6 +36,17 @@
       margin: 0 auto;
       padding: 0 16px;
     }
+  
+    .link-card-anpham {
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .link-card-anpham:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+      border-color: rgba(37, 99, 235, 0.65);
+    }
 
     /* Header */
     header {
@@ -889,15 +900,17 @@
 
         <div id="publications" class="block-soft">
           <div class="pill">Ấn phẩm khoa học</div>
-          <h2 class="section-title" id="anpham-title" style="font-size:1.1rem;">Tạp chí &amp; công bố khoa học</h2>
+          <h2 class="section-title" id="anpham-title" style="font-size:1.1rem;">
+            Tạp chí &amp; công bố khoa học
+          </h2>
           <p class="section-sub" id="anpham-sub">
             Hỗ trợ tác giả từ ý tưởng đến công bố trên tạp chí trong nước và quốc tế.
           </p>
-          <ul class="list" id="anpham-list">
-            <li>Tạp chí Sức khỏe &amp; Lão hóa: thể lệ, quy trình phản biện, số đã xuất bản.</li>
-            <li>Bài báo, báo cáo chuyên đề, guideline lâm sàng về lão khoa và bệnh mạn tính.</li>
-            <li>Bản tin, tài liệu giáo dục sức khỏe dành cho người cao tuổi và người chăm sóc.</li>
-          </ul>
+
+          <!-- Toàn bộ danh mục sẽ được sinh tự động ở đây -->
+          <div id="anpham-cards" class="card-grid">
+          <!-- JS sẽ xóa & render lại tất cả -->
+          </div>
         </div>
       </div>
     </section>
@@ -1162,32 +1175,64 @@
       }
     }
 
-    /* ========= 5. ẤN PHẨM (module=anpham) ========= */
-    async function loadAnPham() {
-      try {
-        const res  = await fetch(API_URL + "?module=anpham");
-        const data = await res.json();
-        const info = data.info || data;
+  /* ========= 5. ẤN PHẨM (module=anpham) ========= */
+  async function loadAnPham() {
+  try {
+    const res  = await fetch(API_URL + "?module=anpham");
+    const data = await res.json();
+    const items = data.items || data;   // hỗ trợ cả {items:[...]} và [...]
 
-        const titleEl = document.getElementById("anpham-title");
-        const subEl   = document.getElementById("anpham-sub");
-        const listEl  = document.getElementById("anpham-list");
+    const titleEl = document.getElementById("anpham-title");
+    const subEl   = document.getElementById("anpham-sub");
+    const cardsEl = document.getElementById("anpham-cards");
 
-        if (titleEl && info.title)   titleEl.textContent = info.title;
-        if (subEl && info.subtitle)  subEl.textContent   = info.subtitle;
+    if (!cardsEl) return;
 
-        if (listEl && Array.isArray(info.items)) {
-          listEl.innerHTML = "";
-          info.items.forEach(txt => {
-            const li = document.createElement("li");
-            li.textContent = txt;
-            listEl.appendChild(li);
-          });
-        }
-      } catch (err) {
-        console.error("Lỗi load AnPham:", err);
-      }
+    // Nếu muốn title/sub lấy từ Sheet thì cho thêm field title/subtitle ở data
+    if (data.title && titleEl)   titleEl.textContent = data.title;
+    if (data.subtitle && subEl)  subEl.textContent   = data.subtitle;
+
+    if (!items.length) {
+      cardsEl.innerHTML =
+        '<div style="font-size:0.85rem;color:#64748b;">Chưa có danh mục ấn phẩm.</div>';
+      return;
     }
+
+    cardsEl.innerHTML = "";
+
+    items.forEach(it => {
+      const tag   = it.tag   || "Danh mục";
+      const title = it.title || "";
+      const desc  = it.desc  || "";
+      const link  = it.link  || "";
+
+      // Card HTML
+      const card = document.createElement(link ? "a" : "div");
+      if (link) {
+        card.href = link;
+        card.target = "_blank";
+        card.rel = "noopener noreferrer";
+      }
+      card.className = "card link-card-anpham";
+
+      card.innerHTML = `
+        <div class="card-icon">📚</div>
+        <span>${tag}</span>
+        <h3>${title}</h3>
+        <p>${desc}</p>
+      `;
+
+      cardsEl.appendChild(card);
+    });
+  } catch (err) {
+    console.error("Lỗi load AnPham:", err);
+    const cardsEl = document.getElementById("anpham-cards");
+    if (cardsEl) {
+      cardsEl.innerHTML =
+        '<div style="font-size:0.85rem;color:#b91c1c;">Không tải được danh mục ấn phẩm.</div>';
+    }
+  }
+}
 
     /* ========= GỬI FORM LIÊN HỆ (module=contact) ========= */
     function initContactForm() {
@@ -1302,19 +1347,21 @@
     }
 
     // Gọi tất cả khi trang load
-    window.addEventListener("load", () => {
-      loadNews();
-      loadEcosystem();
-      loadGioiThieu();
-      loadLinhVuc();
-      loadDaoTao();
-      loadAnPham();
-      loadHeroStats();
-      initContactForm();
-    });
+   window.addEventListener("load", () => {
+    loadNews();
+    loadEcosystem();
+    loadGioiThieu();
+    loadLinhVuc();
+    loadDaoTao();
+    loadAnPham();   // vẫn giữ dòng này
+    loadHeroStats();
+  initContactForm && initContactForm();
+});
+
   </script>
 </body>
 </html>
+
 
 
 
