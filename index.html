@@ -774,13 +774,13 @@
               Xem dashboard nội bộ
             </button>
           </div>
-          <div class="hero-stats">
+          <div class="hero-stats" id="hero-stats">
             <div class="hero-stat-item">
-              <div class="hero-stat-number">20+</div>
+              <div class="hero-stat-number" data-value="${it.number || 0}">0</div>
               <div>Đề tài nghiên cứu<br/>về người cao tuổi</div>
             </div>
             <div class="hero-stat-item">
-              <div class="hero-stat-number">15+</div>
+              <<div class="hero-stat-number" data-value="${it.number || 0}">0</div>
               <div>Hội thảo &amp; khóa đào tạo<br/>mỗi năm</div>
             </div>
             <div class="hero-stat-item">
@@ -1315,4 +1315,5 @@
   </script>
 </body>
 </html>
+
 
