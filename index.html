@@ -670,15 +670,8 @@
     }
     .btn-link:hover { text-decoration: underline; }
     
-    .social-links {
-      display: flex;
-      gap: 14px;
-      margin-top: 14px;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
     .social-links a {
+      position: relative;              /* để đặt tooltip tuyệt đối theo icon */
       width: 40px;
       height: 40px;
       display: flex;
@@ -692,17 +685,49 @@
       transition: 0.25s;
     }
 
-    .social-links img {
-      width: 22px;
-      height: 22px;
-      filter: invert(85%);
+/* Tooltip kiểu Material UI */
+    .social-links a::after {
+      content: attr(data-tooltip);      /* lấy text từ data-tooltip */
+      position: absolute;
+      bottom: 115%;                     /* phía trên icon */
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      line-height: 1.4;
+      color: #f9fafb;
+      background: #111827;
+      box-shadow: 0 6px 18px rgba(15,23,42,0.45);
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      z-index: 30;
     }
 
-    .social-links a:hover {
-      background: rgba(56,189,248,0.25);
-      border-color: rgba(56,189,248,0.75);
-      transform: translateY(-3px);
-      box-shadow: 0 0 15px rgba(56,189,248,0.4);
+/* Mũi tên nhỏ */
+    .social-links a::before {
+      content: "";
+      position: absolute;
+      bottom: 108%;
+      left: 50%;
+      transform: translateX(-50%) translateY(4px);
+      border-width: 5px;
+      border-style: solid;
+      border-color: #111827 transparent transparent transparent;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.18s ease, transform 0.18s ease;
+    }
+
+/* Hiện tooltip khi hover hoặc focus (tab bằng bàn phím) */
+    .social-links a:hover::after,
+    .social-links a:focus-visible::after,
+    .social-links a:hover::before,
+    .social-links a:focus-visible::before {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
     }
 
     footer {
@@ -1383,11 +1408,11 @@
       }
     }
    // Gọi dữ liệu link mạng XH
-    async function loadSocialLinks() {
-    const box = document.getElementById("social-links");
-    if (!box) return;
+ async function loadSocialLinks() {
+  const box = document.getElementById("social-links");
+  if (!box) return;
 
-    try {
+  try {
     const res = await fetch(API_URL + "?module=social");
     const data = await res.json();
     const items = data.items || [];
@@ -1400,6 +1425,7 @@
     box.innerHTML = "";
 
     items.forEach(row => {
+      const platform = row.platform || "";   // cột platform trong sheet
       const icon = row.icon || "";
       const link = row.link || "#";
 
@@ -1407,15 +1433,26 @@
 
       if (icon.startsWith("img:")) {
         const imgFile = icon.replace("img:", "").trim();
-        content = `<img src="${imgFile}" alt="">`;
+        content = `<img src="${imgFile}" alt="${platform}">`;
       } else {
-        content = `<i class="${icon}"></i>`;
+        content = `<i class="${icon}" aria-hidden="true"></i>`;
       }
 
       const a = document.createElement("a");
       a.href = link;
       a.target = "_blank";
+      a.rel = "noopener noreferrer";
       a.innerHTML = content;
+
+      // 🔹 Tooltip text + hỗ trợ screen reader
+      if (platform) {
+        a.dataset.tooltip = platform;
+        a.setAttribute("aria-label", platform);
+      }
+
+      // cho phép focus bằng bàn phím để hiện tooltip
+      a.tabIndex = 0;
+
       box.appendChild(a);
     });
 
@@ -1436,13 +1473,10 @@
   loadHeroStats();
   loadSocialLinks();   // <-- thêm dòng này
 });
-
-
- 
-
   </script>
 </body>
 </html>
+
 
 
 
