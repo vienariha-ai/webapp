@@ -1006,10 +1006,9 @@
     // Năm hiện tại
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // URL web app Apps Script (đang dùng cho module hoatdong)
-    const NEWS_API_URL = "https://script.google.com/macros/s/AKfycbw4OTfkS6eNVmDqKeROBnH1qQdz_nHxuEUL16kaCyWK9NZmAyxCR1pBK8ygyfXxUUccBQ/exec";
-    // Dùng chung cho các module khác (trụ cột, giới thiệu,...).
-    const API_URL = NEWS_API_URL;
+    // URL web app Apps Script
+    const NEWS_API_URL = "https://script.google.com/macros/s/AKfycby6Wp2o149SK_obUpY6qyE8RN4bFTr3HDBanCXQ-lTZS-qeNDlOi3Ce7nGow6Ar-mmZPQ/exec";
+    const API_URL = NEWS_API_URL; // dùng chung
 
     /* ========= TIN TỨC (module=hoatdong) ========= */
     function renderNews(items) {
@@ -1083,21 +1082,22 @@
       try {
         const res  = await fetch(API_URL + "?module=gioithieu");
         const data = await res.json();
+        const info = data.info || data; // hỗ trợ cả 2 kiểu trả về
 
         const titleEl = document.getElementById("gioithieu-title");
         const subEl   = document.getElementById("gioithieu-sub");
         const textEl  = document.getElementById("gioithieu-text");
         const listEl  = document.getElementById("gioithieu-list");
 
-        if (titleEl) titleEl.textContent = data.title || titleEl.textContent;
-        if (subEl)   subEl.textContent   = data.subtitle || subEl.textContent;
-        if (textEl)  textEl.textContent  = data.text || textEl.textContent;
+        if (titleEl && info.title)   titleEl.textContent = info.title;
+        if (subEl && info.subtitle)  subEl.textContent   = info.subtitle;
+        if (textEl && info.text)     textEl.textContent  = info.text;
 
-        if (listEl && data.suMenh) {
+        if (listEl && (info.suMenh || info.tamNhin || info.giaTri)) {
           listEl.innerHTML = `
-            <li><strong>Sứ mệnh:</strong> ${data.suMenh || ""}</li>
-            <li><strong>Tầm nhìn:</strong> ${data.tamNhin || ""}</li>
-            <li><strong>Giá trị cốt lõi:</strong> ${data.giaTri || ""}</li>
+            <li><strong>Sứ mệnh:</strong> ${info.suMenh || ""}</li>
+            <li><strong>Tầm nhìn:</strong> ${info.tamNhin || ""}</li>
+            <li><strong>Giá trị cốt lõi:</strong> ${info.giaTri || ""}</li>
           `;
         }
       } catch (err) {
@@ -1110,19 +1110,20 @@
       try {
         const res  = await fetch(API_URL + "?module=linhvuc");
         const data = await res.json();
+        const info = data.info || data;
 
         const titleEl = document.getElementById("linhvuc-title");
         const subEl   = document.getElementById("linhvuc-sub");
         const textEl  = document.getElementById("linhvuc-text");
         const tagsEl  = document.getElementById("linhvuc-tags");
 
-        if (titleEl) titleEl.textContent = data.title || titleEl.textContent;
-        if (subEl)   subEl.textContent   = data.subtitle || subEl.textContent;
-        if (textEl)  textEl.textContent  = data.text || textEl.textContent;
+        if (titleEl && info.title)   titleEl.textContent = info.title;
+        if (subEl && info.subtitle)  subEl.textContent   = info.subtitle;
+        if (textEl && info.text)     textEl.textContent  = info.text;
 
-        if (tagsEl && Array.isArray(data.tags)) {
+        if (tagsEl && Array.isArray(info.tags)) {
           tagsEl.innerHTML = "";
-          data.tags.forEach(t => {
+          info.tags.forEach(t => {
             const span = document.createElement("span");
             span.className = "tag";
             span.textContent = t;
@@ -1139,17 +1140,18 @@
       try {
         const res  = await fetch(API_URL + "?module=daotao");
         const data = await res.json();
+        const info = data.info || data;
 
         const titleEl = document.getElementById("daotao-title");
         const subEl   = document.getElementById("daotao-sub");
         const listEl  = document.getElementById("daotao-list");
 
-        if (titleEl) titleEl.textContent = data.title || titleEl.textContent;
-        if (subEl)   subEl.textContent   = data.subtitle || subEl.textContent;
+        if (titleEl && info.title)   titleEl.textContent = info.title;
+        if (subEl && info.subtitle)  subEl.textContent   = info.subtitle;
 
-        if (listEl && Array.isArray(data.items)) {
+        if (listEl && Array.isArray(info.items)) {
           listEl.innerHTML = "";
-          data.items.forEach(txt => {
+          info.items.forEach(txt => {
             const li = document.createElement("li");
             li.textContent = txt;
             listEl.appendChild(li);
@@ -1165,17 +1167,18 @@
       try {
         const res  = await fetch(API_URL + "?module=anpham");
         const data = await res.json();
+        const info = data.info || data;
 
         const titleEl = document.getElementById("anpham-title");
         const subEl   = document.getElementById("anpham-sub");
         const listEl  = document.getElementById("anpham-list");
 
-        if (titleEl) titleEl.textContent = data.title || titleEl.textContent;
-        if (subEl)   subEl.textContent   = data.subtitle || subEl.textContent;
+        if (titleEl && info.title)   titleEl.textContent = info.title;
+        if (subEl && info.subtitle)  subEl.textContent   = info.subtitle;
 
-        if (listEl && Array.isArray(data.items)) {
+        if (listEl && Array.isArray(info.items)) {
           listEl.innerHTML = "";
-          data.items.forEach(txt => {
+          info.items.forEach(txt => {
             const li = document.createElement("li");
             li.textContent = txt;
             listEl.appendChild(li);
@@ -1183,6 +1186,118 @@
         }
       } catch (err) {
         console.error("Lỗi load AnPham:", err);
+      }
+    }
+
+    /* ========= GỬI FORM LIÊN HỆ (module=contact) ========= */
+    function initContactForm() {
+      const form      = document.getElementById("contact-form");
+      const nameEl    = document.getElementById("name");
+      const emailEl   = document.getElementById("email");
+      const messageEl = document.getElementById("message");
+
+      if (!form) return;
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const name    = (nameEl?.value || "").trim();
+        const email   = (emailEl?.value || "").trim();
+        const message = (messageEl?.value || "").trim();
+
+        if (!name || !email || !message) {
+          alert("Vui lòng điền đầy đủ Họ tên, Email và Nội dung.");
+          return;
+        }
+
+        try {
+          const res = await fetch(API_URL, {
+            method: "POST",
+            body: new URLSearchParams({
+              module: "contact",
+              name,
+              email,
+              message
+            })
+          });
+
+          const data = await res.json();
+
+          if (data.success) {
+            alert("ARiHA đã nhận được thông tin của bạn. Xin cảm ơn!");
+            form.reset();
+          } else {
+            console.error("Lỗi backend:", data);
+            alert("Gửi không thành công. Vui lòng thử lại sau.");
+          }
+        } catch (err) {
+          console.error("Lỗi gửi form liên hệ:", err);
+          alert("Có lỗi khi gửi dữ liệu. Vui lòng thử lại.");
+        }
+      });
+    }
+
+    /* ========= HIỆU ỨNG ĐẾM SỐ HERO ========= */
+    function animateCounter(element, duration = 2000) {
+      const rawValue = element.dataset.value;
+      const targetNumber = parseInt(rawValue, 10);
+
+      // Nếu không phải số (ví dụ: "NCKH") → hiển thị nguyên văn, không animate
+      if (isNaN(targetNumber)) {
+        element.textContent = rawValue || "";
+        return;
+      }
+
+      let current = 0;
+      const stepTime = 30; // ms
+      const increment = targetNumber / (duration / stepTime);
+
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= targetNumber) {
+          clearInterval(timer);
+          element.textContent = targetNumber + "+"; // thêm dấu +
+        } else {
+          element.textContent = Math.floor(current);
+        }
+      }, stepTime);
+    }
+
+    /* ========= HERO STATS (module=hero) ========= */
+    async function loadHeroStats() {
+      const box = document.getElementById("hero-stats");
+      if (!box) return;
+
+      try {
+        const res  = await fetch(API_URL + "?module=hero");
+        const data = await res.json();
+        const items = data.items || [];
+
+        if (!items.length) return;
+
+        box.innerHTML = "";
+        items.forEach(it => {
+          const item = document.createElement("div");
+          item.className = "hero-stat-item";
+
+          item.innerHTML = `
+            <div class="hero-stat-number" data-value="${it.number || ""}">0</div>
+            <div>
+              ${it.line1 || ""}
+              ${it.line2 ? "<br/>" + it.line2 : ""}
+            </div>
+          `;
+
+          box.appendChild(item);
+        });
+
+        // chạy animation sau khi đã render xong
+        document.querySelectorAll(".hero-stat-number").forEach(el => {
+          animateCounter(el);
+        });
+
+      } catch (err) {
+        console.error("Lỗi load HeroStats:", err);
       }
     }
 
@@ -1194,7 +1309,10 @@
       loadLinhVuc();
       loadDaoTao();
       loadAnPham();
+      loadHeroStats();
+      initContactForm();
     });
   </script>
 </body>
 </html>
+
