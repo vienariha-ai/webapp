@@ -669,7 +669,14 @@
       padding: 0;
     }
     .btn-link:hover { text-decoration: underline; }
-    
+    .social-links {
+      display: flex;          /* xếp các <a> theo hàng ngang */
+      flex-wrap: wrap;        /* nếu chật sẽ tự xuống hàng */
+      gap: 10px;              /* khoảng cách giữa các icon */
+      margin-top: 10px;       /* cách trên một chút cho thoáng */
+      align-items: center;    /* căn giữa theo trục dọc */
+    }
+
     .social-links a {
       position: relative;              /* để đặt tooltip tuyệt đối theo icon */
       width: 40px;
@@ -1477,6 +1484,7 @@
   </script>
 </body>
 </html>
+
 
 
 
