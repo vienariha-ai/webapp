@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Viện ARiHA – Dashboard nghiên cứu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #eef3ff;
+      --bg-card: #ffffff;
+      --primary: #2563eb;
+      --primary-soft: #e0ecff;
+      --primary-dark: #1e40af;
+      --accent: #22c55e;
+      --text-main: #0f172a;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --radius-lg: 20px;
+      --radius-md: 12px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 40px rgba(15, 23, 42, 0.12);
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #dbeafe 0, #eef2ff 45%, #f9fafb 100%);
+      min-height: 100vh;
+      color: var(--text-main);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ==== TOPBAR ==== */
+    .topbar {
+      max-width: 1180px;
+      margin: 18px auto 10px;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: contain;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+    }
+
+    .brand-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title span:first-child {
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary-dark);
+    }
+
+    .brand-title span:last-child {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 11px;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(37, 99, 235, 0.08);
+      color: var(--primary-dark);
+      font-weight: 500;
+    }
+
+    /* ==== MAIN LAYOUT ==== */
+    .wrapper {
+      max-width: 1180px;
+      margin: 0 auto 30px;
+      padding: 0 18px 26px;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+
+    .page-note {
+      font-size: 12px;
+      color: #374151;
+      margin-bottom: 16px;
+    }
+
+    .page-note span {
+      background: rgba(37, 99, 235, 0.09);
+      color: var(--primary-dark);
+      border-radius: var(--radius-pill);
+      padding: 3px 10px;
+      font-weight: 500;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 230px) minmax(0, 1fr);
+      gap: 18px;
+      align-items: flex-start;
+    }
+
+    /* ==== SIDEBAR ==== */
+    .sidebar {
+      background: radial-gradient(circle at top left, #020617 0, #020617 40%, #0f172a 100%);
+      border-radius: var(--radius-lg);
+      padding: 16px 14px 14px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.6);
+      color: #e5e7eb;
+      position: sticky;
+      top: 20px;
+    }
+
+    .sidebar-heading {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #9ca3af;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-sub {
+      font-size: 11px;
+      color: #6b7280;
+      margin-bottom: 12px;
+    }
+
+    .sidebar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .sidebar-item {
+      padding: 8px 10px;
+      border-radius: 14px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .sidebar-item small {
+      display: block;
+      font-size: 10px;
+      color: #9ca3af;
+    }
+
+    .sidebar-item span.icon {
+      font-size: 15px;
+      opacity: 0.9;
+    }
+
+    .sidebar-item:hover {
+      background: rgba(30, 64, 175, 0.9);
+      border-color: rgba(129, 140, 248, 0.9);
+    }
+
+    .sidebar-item.active {
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      border-color: transparent;
+      box-shadow: 0 12px 30px rgba(37, 99, 235, 0.75);
+    }
+
+    /* ==== CARD ==== */
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 16px 18px;
+      border: 1px solid rgba(148, 163, 184, 0.35);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .card-header-main h2 {
+      font-size: 15px;
+      margin-bottom: 2px;
+    }
+
+    .card-header-main p {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .card-header-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      border-radius: var(--radius-pill);
+      color: #f9fafb;
+      border: none;
+      font-size: 11px;
+      font-weight: 500;
+      padding: 6px 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-primary span.icon {
+      font-size: 14px;
+    }
+
+    .badge-soft {
+      border-radius: var(--radius-pill);
+      padding: 4px 9px;
+      font-size: 11px;
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    .filters-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .filters-row select {
+      border-radius: var(--radius-pill);
+      border: 1px solid var(--border);
+      background: #f9fafb;
+      padding: 6px 24px 6px 10px;
+      font-size: 11px;
+      color: #374151;
+    }
+
+    .filters-row select:focus {
+      outline: 2px solid rgba(37, 99, 235, 0.35);
+      outline-offset: 1px;
+    }
+
+    .card-note {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+    }
+
+    thead {
+      background: #f9fafb;
+    }
+
+    th,
+    td {
+      padding: 7px 8px;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 10px;
+      color: #6b7280;
+    }
+
+    tbody tr:hover {
+      background: #f3f4ff;
+    }
+
+    .status-pill {
+      padding: 4px 8px;
+      border-radius: var(--radius-pill);
+      font-size: 10px;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-done {
+      background: #ecfdf3;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .status-review {
+      background: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fed7aa;
+    }
+
+    .status-ongoing {
+      background: #dbeafe;
+      color: #1d4ed8;
+      border: 1px solid #bfdbfe;
+    }
+
+    .btn-link {
+      font-size: 11px;
+      color: #2563eb;
+      font-weight: 500;
+    }
+
+    .btn-link:hover {
+      text-decoration: underline;
+    }
+
+    .panel {
+      display: none;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    /* ==== RESPONSIVE ==== */
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .sidebar {
+        position: static;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      th,
+      td {
+        padding: 5px 6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <!-- CLICK = về index.html -->
+    <a href="index.html" class="brand">
+      <img src="logo-ariha.png" alt="Logo Viện ARiHA" />
+      <div class="brand-title">
+        <span>Viện ARiHA</span>
+        <span>Viện Nghiên cứu Ứng dụng Khoa học Sức khỏe &amp; Lão hóa – BV Thống Nhất</span>
+      </div>
+    </a>
+    <div class="topbar-right">
+      <div>Dashboard nghiên cứu (demo nội bộ)</div>
+      <div class="pill">Năm <span id="year-pill"></span></div>
+      <!-- NÚT VỀ TRANG CHỦ -->
+      <button class="btn-primary" type="button" onclick="window.location.href='index.html'">
+        <span class="icon">←</span> Về trang chủ
+      </button>
+    </div>
+  </header>
+
+  <main class="wrapper">
+    <h1 class="page-title">Nội bộ – Dashboard nghiên cứu (demo)</h1>
+    <p class="page-subtitle">
+      Khu vực quản lý đề tài, công bố, hội thảo, thẩm định và điểm số NCKH. Giao diện này dùng
+      dữ liệu từ Google Sheets (thông qua Google Apps Script Web App).
+    </p>
+    <p class="page-note">
+      <span>Gợi ý triển khai thực tế:</span> Mỗi module tương ứng với một sheet (DeTai, CongBo, HoiThao, ThamDinh, KPI_NCKH).
+    </p>
+
+    <div class="layout">
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+        <div class="sidebar-heading">Module quản lý</div>
+        <div class="sidebar-sub">Chọn phân hệ cần xem chi tiết</div>
+
+        <div class="sidebar-list">
+          <div class="sidebar-item active" data-target="panel-detai">
+            <div>
+              Đề tài nghiên cứu
+              <small>Danh mục &amp; tiến độ</small>
+            </div>
+            <span class="icon">📚</span>
+          </div>
+
+          <div class="sidebar-item" data-target="panel-congbo">
+            <div>
+              Đề tài công bố
+              <small>Tạp chí trong &amp; ngoài nước</small>
+            </div>
+            <span class="icon">📰</span>
+          </div>
+
+          <div class="sidebar-item" data-target="panel-hoithao">
+            <div>
+              Hội thảo / Khóa học
+              <small>Lịch &amp; đăng ký</small>
+            </div>
+            <span class="icon">🎓</span>
+          </div>
+
+          <div class="sidebar-item" data-target="panel-thamdinh">
+            <div>
+              Thẩm định đề tài
+              <small>Phiếu &amp; điểm</small>
+            </div>
+            <span class="icon">📝</span>
+          </div>
+
+          <div class="sidebar-item" data-target="panel-diemso">
+            <div>
+              Điểm số &amp; KPI NCKH
+              <small>Tổng hợp theo cá nhân</small>
+            </div>
+            <span class="icon">📈</span>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN CARD -->
+      <section class="card">
+        <!-- PANEL: ĐỀ TÀI -->
+        <div id="panel-detai" class="panel active">
+          <div class="card-header">
+            <div class="card-header-main">
+              <h2>Quản lý đề tài nghiên cứu</h2>
+              <p>Danh mục đề tài, loại hình nghiên cứu, chủ nhiệm &amp; trạng thái (sheet “DeTai”).</p>
+            </div>
+            <div class="card-header-actions">
+              <button class="btn-primary" type="button">
+                <span class="icon">🔗</span>Kết nối Google Sheets
+              </button>
+              <span class="badge-soft">Dữ liệu demo, đã sẵn sàng kết nối thật</span>
+            </div>
+          </div>
+
+          <div class="filters-row">
+            <select id="detai-year-filter">
+              <option value="">Năm: Tất cả</option>
+            </select>
+            <select id="detai-status-filter">
+              <option value="">Trạng thái: Tất cả</option>
+            </select>
+            <select id="detai-type-filter">
+              <option value="">Loại nghiên cứu: Tất cả</option>
+            </select>
+          </div>
+          <div class="card-note">
+            Dữ liệu hiển thị từ sheet “DeTai”. Bộ lọc hoạt động ở phía front-end, không cần tải lại trang.
+          </div>
+ 	    <table class="dash-table">
+                <thead>
+                  <colgroup>
+			<col style="width: 5%;">   <!-- Mã số -->
+			<col style="width: 40%;">  <!-- Tên đề tài -->
+			<col style="width: 15%;">  <!-- Loại nghiên cứu -->
+			<col style="width: 20%;">  <!-- Chủ nhiệm -->
+			<col style="width: 15%;">   <!-- Trạng thái -->
+			<col style="width: 5%;">   <!-- Hồ sơ -->
+	          </colgroup>
+		  <tr>
+                    <th>Mã số</th>
+                    <th>Tên đề tài</th>
+                    <th>Loại nghiên cứu</th>
+                    <th>Chủ nhiệm</th>
+                    <th>Trạng thái</th>
+                    <th>Hồ sơ</th>
+                  </tr>
+	        </thead>
+        	<tbody id="detai-body"></tbody>
+	    </table>
+        </div>
+
+        <!-- PANEL: CÔNG BỐ -->
+        <div id="panel-congbo" class="panel">
+          <div class="card-header">
+            <div class="card-header-main">
+              <h2>Đề tài công bố – Bài báo khoa học</h2>
+              <p>Dữ liệu công bố khoa học (sheet “CongBo”), có DOI &amp; chỉ số uy tín.</p>
+            </div>
+            <div class="card-header-actions">
+              <span class="badge-soft">Theo dõi tạp chí trong nước &amp; quốc tế</span>
+            </div>
+          </div>
+
+          <div class="filters-row">
+            <select id="congbo-year-filter">
+              <option value="">Năm: Tất cả</option>
+            </select>
+            <select id="congbo-type-filter">
+              <option value="">Loại tạp chí: Tất cả</option>
+            </select>
+          </div>
+          <div class="card-note">
+            Có thể mở rộng thêm bộ lọc theo IF, Scopus, WoS nếu bổ sung cột tương ứng trong Google Sheets.
+          </div>
+          <table class="dash-table">
+                <thead>
+                  <colgroup>
+			<col style="width: 5%;">   <!-- Năm -->
+			<col style="width: 45%;">  <!-- Tên công bố -->
+			<col style="width: 15%;">  <!-- Loại tạp chí -->
+			<col style="width: 15%;">  <!-- Tạp chí -->
+			<col style="width: 5%;">   <!-- DOI -->
+			<col style="width: 10%;">   <!-- Chỉ số uy tín -->
+			<col style="width: 5%;">   <!-- Link -->
+	          </colgroup>
+		  <tr>
+                    <th>Năm</th>
+                    <th>Tên công bố</th>
+                    <th>Loại tạp chí</th>
+                    <th>Tạp chí</th>
+                    <th>DOI</th>
+                    <th>Chỉ số uy tín</th>
+                    <th>Link</th>
+                  </tr>
+                </thead>
+                <tbody id="congbo-body">
+                  <!-- JS render -->
+                </tbody>
+              </table>
+
+        </div>
+
+        <!-- PANEL: HỘI THẢO -->
+        <div id="panel-hoithao" class="panel">
+          <div class="card-header">
+            <div class="card-header-main">
+              <h2>Hội thảo / Khóa học / Sinh hoạt khoa học</h2>
+              <p>Lịch chương trình, loại hình &amp; thông tin đăng ký (sheet “HoiThao”).</p>
+            </div>
+            <div class="card-header-actions">
+              <span class="badge-soft">Kết hợp ĐTLT, hội nghị, SHKH</span>
+            </div>
+          </div>
+
+          <div class="filters-row">
+            <select id="hoithao-year-filter">
+              <option value="">Năm: Tất cả</option>
+            </select>
+            <select id="hoithao-type-filter">
+              <option value="">Loại chương trình: Tất cả</option>
+            </select>
+          </div>
+          <div class="card-note">
+            Mỗi dòng tương ứng một hội thảo/khóa học, có thể gắn link poster hoặc form đăng ký.
+          </div>
+
+         
+	 <table>
+            <thead>
+              <tr>
+                <th style="width:95px;">Ngày</th>
+                <th>Chương trình</th>
+                <th style="width:150px;">Loại</th>
+                <th style="width:140px;">Đăng ký / Số lượng</th>
+                <th style="width:85px;">Chi tiết</th>
+              </tr>
+            </thead>
+            <tbody id="hoithao-body"></tbody>
+          </table>
+        </div>
+
+        <!-- PANEL: THẨM ĐỊNH (mô tả) -->
+        <div id="panel-thamdinh" class="panel">
+          <div class="card-header">
+            <div class="card-header-main">
+              <h2>Thẩm định đề tài – Phiếu &amp; điểm</h2>
+              <p>Module thẩm định sử dụng sheet “ThamDinh” để lưu phản biện và điểm số.</p>
+            </div>
+            <div class="card-header-actions">
+              <span class="badge-soft">Script có thể tự tính điểm trung bình</span>
+            </div>
+          </div>
+          <div class="card-note">
+            Trong Apps Script, bạn đã có hàm tính <strong>DiemTB</strong> và phân loại trạng thái. Panel này có thể
+            mở rộng thành bảng chi tiết kết quả thẩm định cho từng đề tài.
+          </div>
+        </div>
+
+        <!-- PANEL: ĐIỂM SỐ & KPI (mô tả) -->
+        <div id="panel-diemso" class="panel">
+          <div class="card-header">
+            <div class="card-header-main">
+              <h2>Điểm số &amp; KPI NCKH</h2>
+              <p>Điểm khoa học tổng hợp theo từng cá nhân, đọc từ sheet “KPI_NCKH”.</p>
+            </div>
+            <div class="card-header-actions">
+              <span class="badge-soft">Tính điểm tự động bằng Apps Script</span>
+            </div>
+          </div>
+          <div class="card-note">
+            Bạn đã có hàm <code>calculateNCKHPoints()</code> để tính điểm đề tài &amp; bài báo theo trọng số. Từ dữ liệu này
+            có thể dựng bảng xếp hạng NCKH, thanh tiến trình theo chỉ tiêu năm, v.v.
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    // cập nhật năm
+    const year = new Date().getFullYear();
+    document.getElementById("year-pill").textContent = year;
+
+    // THAY BẰNG URL WEB APP CỦA BẠN
+    const API_URL = "https://script.google.com/macros/s/AKfycbwiAVTqJCx-DUdMDF_LePfKHC3uWu_VYMYhaWtybzXqNfHRp9KlYcFDW_BnA7NZgMY3/exec";
+
+    // lưu dữ liệu gốc
+    let detaiAll = [];
+    let congboAll = [];
+    let hoithaoAll = [];
+
+    // helper: class trạng thái
+    function statusClass(trangThai) {
+      if (!trangThai) return "";
+      const t = String(trangThai).toLowerCase();
+      if (t.includes("nghiệm thu") || t.includes("hoàn thành")) return "status-done";
+      if (t.includes("thẩm định") || t.includes("xét duyệt")) return "status-review";
+      return "status-ongoing";
+    }
+
+    /* ===== ĐỀ TÀI ===== */
+
+    function getYearFromMaSo(maSo) {
+      if (!maSo) return "";
+      const s = String(maSo);
+      const m4 = s.match(/(20\d{2})/);
+      if (m4) return m4[1];
+      const m2 = s.match(/DT-?(\d{2})-/i);
+      if (m2) return "20" + m2[1];
+      return "";
+    }
+
+    async function loadDetai() {
+      if (!API_URL || API_URL === "YOUR_WEB_APP_URL_HERE") return;
+      try {
+        const res = await fetch(API_URL + "?module=detai");
+        const data = await res.json();
+        detaiAll = data.items || [];
+        buildDetaiFilters();
+        applyDetaiFilters();
+      } catch (e) {
+        console.error("Lỗi load đề tài:", e);
+      }
+    }
+
+    function buildDetaiFilters() {
+      const yearSel = document.getElementById("detai-year-filter");
+      const stSel = document.getElementById("detai-status-filter");
+      const typeSel = document.getElementById("detai-type-filter");
+      if (!yearSel || !stSel || !typeSel) return;
+
+      yearSel.length = 1;
+      stSel.length = 1;
+      typeSel.length = 1;
+
+      const years = new Set();
+      const statuses = new Set();
+      const types = new Set();
+
+      detaiAll.forEach(it => {
+        const y = getYearFromMaSo(it.maSo);
+        if (y) years.add(y);
+        if (it.trangThai) statuses.add(String(it.trangThai).trim());
+        if (it.loaiNghienCuu) types.add(String(it.loaiNghienCuu).trim());
+      });
+
+      Array.from(years).sort().forEach(y => {
+        const o = document.createElement("option");
+        o.value = y;
+        o.textContent = "Năm: " + y;
+        yearSel.appendChild(o);
+      });
+
+      Array.from(statuses).sort().forEach(s => {
+        const o = document.createElement("option");
+        o.value = s;
+        o.textContent = s;
+        stSel.appendChild(o);
+      });
+
+      Array.from(types).sort().forEach(t => {
+        const o = document.createElement("option");
+        o.value = t;
+        o.textContent = t;
+        typeSel.appendChild(o);
+      });
+
+      yearSel.onchange = applyDetaiFilters;
+      stSel.onchange = applyDetaiFilters;
+      typeSel.onchange = applyDetaiFilters;
+    }
+
+    function applyDetaiFilters() {
+      const yearSel = document.getElementById("detai-year-filter");
+      const stSel = document.getElementById("detai-status-filter");
+      const typeSel = document.getElementById("detai-type-filter");
+      if (!yearSel || !stSel || !typeSel) return;
+
+      const yVal = yearSel.value;
+      const stVal = stSel.value;
+      const tVal = typeSel.value;
+
+      let list = detaiAll.slice();
+
+      if (yVal) {
+        list = list.filter(it => getYearFromMaSo(it.maSo) === yVal);
+      }
+      if (stVal) {
+        list = list.filter(
+          it => String(it.trangThai || "").toLowerCase() === stVal.toLowerCase()
+        );
+      }
+      if (tVal) {
+        list = list.filter(
+          it => String(it.loaiNghienCuu || "").toLowerCase() === tVal.toLowerCase()
+        );
+      }
+
+      renderDetai(list);
+    }
+
+    function renderDetai(list) {
+      const tbody = document.getElementById("detai-body");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      list.forEach(it => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${it.maSo || ""}</td>
+          <td>${it.tenDeTai || ""}</td>
+          <td>${it.loaiNghienCuu || ""}</td>
+          <td>${it.chuNhiem || ""}</td>
+          <td><span class="status-pill ${statusClass(it.trangThai)}">${it.trangThai || ""}</span></td>
+          <td>${
+            it.link
+              ? `<a class="btn-link" href="${it.link}" target="_blank">Xem hồ sơ</a>`
+              : ""
+          }</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* ===== CÔNG BỐ ===== */
+
+    async function loadCongbo() {
+      if (!API_URL || API_URL === "YOUR_WEB_APP_URL_HERE") return;
+      try {
+        const res = await fetch(API_URL + "?module=congbo");
+        const data = await res.json();
+        congboAll = data.items || [];
+        buildCongboFilters();
+        applyCongboFilters();
+      } catch (e) {
+        console.error("Lỗi load công bố:", e);
+      }
+    }
+
+    function buildCongboFilters() {
+      const yearSel = document.getElementById("congbo-year-filter");
+      const typeSel = document.getElementById("congbo-type-filter");
+      if (!yearSel || !typeSel) return;
+
+      yearSel.length = 1;
+      typeSel.length = 1;
+
+      const years = new Set();
+      const types = new Set();
+
+      congboAll.forEach(it => {
+        if (it.nam) years.add(String(it.nam));
+        if (it.loaiTapChi) types.add(String(it.loaiTapChi).trim());
+      });
+
+      Array.from(years).sort().forEach(y => {
+        const o = document.createElement("option");
+        o.value = y;
+        o.textContent = "Năm: " + y;
+        yearSel.appendChild(o);
+      });
+      Array.from(types).sort().forEach(t => {
+        const o = document.createElement("option");
+        o.value = t;
+        o.textContent = t;
+        typeSel.appendChild(o);
+      });
+
+      yearSel.onchange = applyCongboFilters;
+      typeSel.onchange = applyCongboFilters;
+    }
+
+    function applyCongboFilters() {
+      const yearSel = document.getElementById("congbo-year-filter");
+      const typeSel = document.getElementById("congbo-type-filter");
+      if (!yearSel || !typeSel) return;
+
+      const yVal = yearSel.value;
+      const tVal = typeSel.value;
+
+      let list = congboAll.slice();
+
+      if (yVal) list = list.filter(it => String(it.nam) === yVal);
+      if (tVal)
+        list = list.filter(
+          it => String(it.loaiTapChi || "").toLowerCase() === tVal.toLowerCase()
+        );
+
+      renderCongbo(list);
+    }
+
+    function renderCongbo(list) {
+      const tbody = document.getElementById("congbo-body");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      list.forEach(it => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${it.nam || ""}</td>
+          <td>${it.tieuDe || ""}</td>
+          <td>${it.loaiTapChi || ""}</td>
+          <td>${it.tenTapChi || ""}</td>
+          <td>${it.doi || ""}</td>
+          <td>${it.chiSoUyTin || ""}</td>
+          <td>${
+            it.link
+              ? `<a class="btn-link" href="${it.link}" target="_blank">Xem bài</a>`
+              : ""
+          }</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* ===== HỘI THẢO ===== */
+
+    function getYearFromDateStr(str) {
+      if (!str) return "";
+      const m = String(str).match(/(\d{4})/);
+      return m ? m[1] : "";
+    }
+
+    async function loadHoithao() {
+      if (!API_URL || API_URL === "YOUR_WEB_APP_URL_HERE") return;
+      try {
+        const res = await fetch(API_URL + "?module=hoithao");
+        const data = await res.json();
+        hoithaoAll = data.items || [];
+        buildHoithaoFilters();
+        applyHoithaoFilters();
+      } catch (e) {
+        console.error("Lỗi load hội thảo:", e);
+      }
+    }
+
+    function buildHoithaoFilters() {
+      const yearSel = document.getElementById("hoithao-year-filter");
+      const typeSel = document.getElementById("hoithao-type-filter");
+      if (!yearSel || !typeSel) return;
+
+      yearSel.length = 1;
+      typeSel.length = 1;
+
+      const years = new Set();
+      const types = new Set();
+
+      hoithaoAll.forEach(it => {
+        const y = getYearFromDateStr(it.ngay);
+        if (y) years.add(y);
+        if (it.loai) types.add(String(it.loai).trim());
+      });
+
+      Array.from(years).sort().forEach(y => {
+        const o = document.createElement("option");
+        o.value = y;
+        o.textContent = "Năm: " + y;
+        yearSel.appendChild(o);
+      });
+      Array.from(types).sort().forEach(t => {
+        const o = document.createElement("option");
+        o.value = t;
+        o.textContent = t;
+        typeSel.appendChild(o);
+      });
+
+      yearSel.onchange = applyHoithaoFilters;
+      typeSel.onchange = applyHoithaoFilters;
+    }
+
+    function applyHoithaoFilters() {
+      const yearSel = document.getElementById("hoithao-year-filter");
+      const typeSel = document.getElementById("hoithao-type-filter");
+      if (!yearSel || !typeSel) return;
+
+      const yVal = yearSel.value;
+      const tVal = typeSel.value;
+
+      let list = hoithaoAll.slice();
+
+      if (yVal) list = list.filter(it => getYearFromDateStr(it.ngay) === yVal);
+      if (tVal)
+        list = list.filter(
+          it => String(it.loai || "").toLowerCase() === tVal.toLowerCase()
+        );
+
+      renderHoithao(list);
+    }
+
+    function renderHoithao(list) {
+      const tbody = document.getElementById("hoithao-body");
+      if (!tbody) return;
+      tbody.innerHTML = "";
+
+      list.forEach(it => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${it.ngay || ""}</td>
+          <td>${it.chuongTrinh || ""}</td>
+          <td>${it.loai || ""}</td>
+          <td>${it.dangKy || ""}</td>
+          <td>${
+            it.link
+              ? `<a class="btn-link" href="${it.link}" target="_blank">Chi tiết</a>`
+              : ""
+          }</td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    /* ===== CHUYỂN PANEL ===== */
+
+    const sidebarItems = document.querySelectorAll(".sidebar-item");
+    const panels = document.querySelectorAll(".panel");
+
+    sidebarItems.forEach(item => {
+      item.addEventListener("click", () => {
+        sidebarItems.forEach(i => i.classList.remove("active"));
+        item.classList.add("active");
+
+        const target = item.getAttribute("data-target");
+        panels.forEach(p => {
+          p.classList.toggle("active", p.id === target);
+        });
+
+        if (target === "panel-detai") loadDetai();
+        if (target === "panel-congbo") loadCongbo();
+        if (target === "panel-hoithao") loadHoithao();
+      });
+    });
+
+    // load đề tài lần đầu
+    window.addEventListener("load", loadDetai);
+  </script>
+</body>
+</html>
