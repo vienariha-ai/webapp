@@ -1,10 +1,1015 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>Viện ARiHA – Viện Nghiên cứu Ứng dụng Khoa học Sức khỏe & Lão hóa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --primary: #1d4ed8;
+      --primary-dark: #1e40af;
+      --secondary: #06b6d4;
+      --bg-soft: #f1f5f9;
+      --bg-deep: #020617;
+      --text-main: #0f172a;
+      --text-soft: #64748b;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 10px 30px rgba(15, 23, 42, 0.12);
+      --shadow-light: 0 6px 18px rgba(15, 23, 42, 0.08);
+    }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.6;
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.16), transparent 50%),
+        radial-gradient(circle at 100% 0, rgba(129, 140, 248, 0.18), transparent 55%),
+        #020617;
+      color: var(--text-main);
+    }
+    a { text-decoration: none; color: inherit; }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: linear-gradient(
+        to right,
+        rgba(15, 23, 42, 0.92),
+        rgba(15, 23, 42, 0.8),
+        rgba(15, 23, 42, 0.92)
+      );
+      border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+      backdrop-filter: blur(10px);
+    }
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+    }
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-img {
+      height: 42px;
+      width: 42px;
+      border-radius: 50%;
+      object-fit: contain;
+      background: #ffffff;
+      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.9);
+    }
+    .logo-text-main {
+      color: #e5e7eb;
+      font-weight: 600;
+      font-size: 1.02rem;
+    }
+    .logo-text-sub {
+      display: block;
+      font-size: 0.7rem;
+      color: #94a3b8;
+    }
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      font-size: 0.9rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      padding: 6px 10px;
+      border-radius: var(--radius-pill);
+      color: #cbd5f5;
+    }
+    .nav-links a:hover {
+      background: rgba(37, 99, 235, 0.22);
+      color: #e5e7eb;
+    }
+    .btn-login {
+      padding: 7px 16px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(59, 130, 246, 0.9);
+      font-size: 0.85rem;
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.35), transparent 50%),
+                  rgba(15, 23, 42, 0.4);
+      color: #e5e7eb;
+      cursor: pointer;
+    }
+    .btn-login:hover {
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      color: #f9fafb;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.4);
+    }
+
+    /* Sections */
+    main { color: #0f172a; }
+    section { padding: 32px 0; }
+
+    /* Hero */
+    .hero {
+      background:
+        radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.18), transparent 60%),
+        radial-gradient(circle at 100% 20%, rgba(129, 140, 248, 0.25), transparent 60%),
+        linear-gradient(to bottom, #020617 0, #020617 40%, #020617 60%, #020617 100%);
+      color: #e5e7eb;
+      padding-bottom: 40px;
+    }
+    .hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(0, 1.1fr);
+      gap: 32px;
+      align-items: center;
+    }
+    .hero-badge-top {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 118, 110, 0.16);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      font-size: 0.75rem;
+      color: #bbf7d0;
+      margin-bottom: 10px;
+    }
+    .hero-badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+    }
+    .hero-title {
+      font-size: clamp(1.9rem, 4vw, 2.4rem);
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+    .hero-title span {
+      background: linear-gradient(120deg, #38bdf8, #a855f7, #22c55e);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 0.98rem;
+      color: #cbd5f5;
+      margin-bottom: 16px;
+      max-width: 560px;
+    }
+    .hero-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 18px;
+      font-size: 0.8rem;
+    }
+    .badge {
+      padding: 4px 11px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      color: #e2e8f0;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .btn-primary, .btn-secondary {
+      padding: 9px 16px;
+      border-radius: var(--radius-pill);
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      color: #f9fafb;
+      box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #1d4ed8, #0284c7);
+      transform: translateY(-1px);
+    }
+    .btn-secondary {
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+    .btn-secondary:hover { background: rgba(15, 23, 42, 0.95); }
+    .hero-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      font-size: 0.78rem;
+      color: #cbd5f5;
+    }
+    .hero-stat-item { min-width: 90px; }
+    .hero-stat-number {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e5e7eb;
+    }
+
+    .hero-right-card {
+      background: radial-gradient(circle at 0 0, rgba(56, 189, 248, 0.25), transparent 55%),
+                  radial-gradient(circle at 100% 100%, rgba(52, 211, 153, 0.2), transparent 60%),
+                  rgba(15, 23, 42, 0.96);
+      border-radius: 22px;
+      padding: 14px;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-image-wrap {
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 10px;
+      position: relative;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+    }
+    .hero-image-wrap img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      max-height: 210px;
+    }
+    .hero-image-tag {
+      position: absolute;
+      left: 10px;
+      top: 10px;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.8);
+      font-size: 0.72rem;
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+    }
+    .hero-card-title {
+      font-size: 0.95rem;
+      margin-bottom: 5px;
+      color: #e5e7eb;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .hero-card-text {
+      font-size: 0.82rem;
+      color: #cbd5f5;
+      margin-bottom: 8px;
+    }
+    .hero-chip-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.72rem;
+    }
+    .hero-chip {
+      padding: 3px 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.86);
+      border: 1px solid rgba(129, 140, 248, 0.7);
+      color: #e5e7eb;
+    }
+
+    /* Section surfaces */
+    .section-surface {
+      background: radial-gradient(circle at 50% 0, rgba(191, 219, 254, 0.5), transparent 55%),
+                  var(--bg-soft);
+      border-radius: 24px;
+      padding: 22px 18px 24px;
+      box-shadow: var(--shadow-light);
+      margin-top: -16px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .section-title {
+      font-size: 1.22rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+      color: #0f172a;
+    }
+    .section-sub {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      margin-bottom: 14px;
+    }
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.74rem;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      background: rgba(59, 130, 246, 0.08);
+      color: #1d4ed8;
+      border: 1px solid rgba(59, 130, 246, 0.18);
+      margin-bottom: 6px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .card {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+      font-size: 0.85rem;
+      border: 1px solid rgba(226, 232, 240, 0.9);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .card span {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: #94a3b8;
+    }
+    .card h3 {
+      font-size: 0.96rem;
+      margin-bottom: 2px;
+      color: #0f172a;
+    }
+    .card p { color: #4b5563; }
+    .card-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: rgba(59, 130, 246, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+      font-size: 1.1rem;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 20px;
+    }
+    .block-soft {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 14px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+      border: 1px solid rgba(226, 232, 240, 0.96);
+      font-size: 0.86rem;
+    }
+    .list {
+      font-size: 0.85rem;
+      padding-left: 16px;
+    }
+    .list li { margin-bottom: 6px; }
+    .tag {
+      display: inline-block;
+      font-size: 0.76rem;
+      background: rgba(191, 219, 254, 0.8);
+      color: #1d4ed8;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+
+    .news-list {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      font-size: 0.82rem;
+    }
+    .news-item {
+      background: #ffffff;
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+      border: 1px solid rgba(226, 232, 240, 0.96);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .news-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      align-items: center;
+    }
+    .news-item h4 {
+      font-size: 0.9rem;
+      margin-bottom: 0;
+      color: #0f172a;
+    }
+    .news-meta {
+      font-size: 0.74rem;
+      color: #64748b;
+      margin-bottom: 2px;
+    }
+    .news-type {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      background: rgba(59, 130, 246, 0.06);
+      color: #1d4ed8;
+    }
+
+    .contact-section {
+      background: radial-gradient(circle at 80% 0, rgba(96, 165, 250, 0.36), transparent 60%),
+                  #0b1120;
+      color: #e5e7eb;
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+      gap: 20px;
+      font-size: 0.85rem;
+    }
+    .contact-box {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(51, 65, 85, 0.9);
+    }
+    .contact-row { margin-bottom: 6px; }
+    .contact-box label {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+      color: #cbd5f5;
+    }
+    .contact-box input,
+    .contact-box textarea {
+      width: 100%;
+      padding: 7px 9px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.8);
+      font-size: 0.85rem;
+      background: rgba(15, 23, 42, 0.9);
+      color: #e2e8f0;
+    }
+    .contact-box textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    /* INTERNAL MODULE (CSS có thể giữ lại, trang chủ không dùng) */
+    .internal-section {
+      background: linear-gradient(to bottom, #e5f0ff, #eef2ff);
+      border-top: 1px solid rgba(148, 163, 184, 0.4);
+      border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+    }
+    .internal-note {
+      font-size: 0.8rem;
+      color: #4b5563;
+      margin-bottom: 10px;
+    }
+    .internal-layout {
+      display: grid;
+      grid-template-columns: 240px minmax(0, 1fr);
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .sidebar {
+      background: #0b1120;
+      border-radius: var(--radius-lg);
+      padding: 10px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.5);
+      font-size: 0.85rem;
+      color: #e5e7eb;
+      border: 1px solid rgba(51, 65, 85, 0.9);
+    }
+    .sidebar-title {
+      font-size: 0.83rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #cbd5f5;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .sidebar-title-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 99px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+    }
+    .sidebar-item {
+      padding: 8px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #e5e7eb;
+      font-size: 0.82rem;
+    }
+    .sidebar-item span { font-size: 0.83rem; }
+    .sidebar-item small {
+      font-size: 0.7rem;
+      color: #9ca3af;
+    }
+    .sidebar-item:hover { background: rgba(30, 64, 175, 0.7); }
+    .sidebar-item.active {
+      background: linear-gradient(135deg, #2563eb, #0ea5e9);
+      color: #f9fafb;
+      box-shadow: 0 10px 26px rgba(15, 23, 42, 0.8);
+    }
+    .sidebar-item.active small { color: #dbeafe; }
+
+    .dashboard-content {
+      background: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 14px;
+      box-shadow: 0 18px 40px rgba(15, 23, 42, 0.22);
+      font-size: 0.84rem;
+      min-height: 270px;
+      border: 1px solid rgba(148, 163, 184, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+    .dashboard-content::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at 0 0, rgba(59, 130, 246, 0.08), transparent 60%),
+                  radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.08), transparent 60%);
+      z-index: -1;
+    }
+    .dash-headline {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .dash-headline h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+    .dash-filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 0.8rem;
+    }
+    .dash-filters select {
+      padding: 4px 8px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(248, 250, 252, 0.95);
+    }
+    .chip {
+      display: inline-block;
+      padding: 3px 9px;
+      border-radius: var(--radius-pill);
+      font-size: 0.72rem;
+      background: rgba(34, 197, 94, 0.08);
+      color: #15803d;
+      margin-left: 6px;
+      border: 1px solid rgba(74, 222, 128, 0.4);
+    }
+    .dash-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 6px 0 8px;
+      font-size: 0.8rem;
+    }
+    .dash-tag {
+      padding: 2px 9px;
+      border-radius: var(--radius-pill);
+      background: rgba(219, 234, 254, 0.85);
+      color: #1d4ed8;
+    }
+
+    .dash-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      font-size: 0.78rem;
+      background: rgba(255, 255, 255, 0.9);
+    }
+    .dash-table th,
+    .dash-table td {
+      border-bottom: 1px solid #e5e7eb;
+      padding: 6px 4px;
+      text-align: left;
+    }
+    .dash-table th {
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+      background: rgba(248, 250, 252, 0.95);
+    }
+    .status-pill {
+      padding: 2px 8px;
+      border-radius: var(--radius-pill);
+      font-size: 0.72rem;
+      display: inline-block;
+      border: 1px solid transparent;
+    }
+    .status-ongoing {
+      background: #fef9c3;
+      color: #92400e;
+      border-color: #facc15;
+    }
+    .status-done {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #22c55e;
+    }
+    .status-review {
+      background: #e0f2fe;
+      color: #1d4ed8;
+      border-color: #38bdf8;
+    }
+    .btn-link {
+      font-size: 0.75rem;
+      border: none;
+      background: none;
+      color: #2563eb;
+      cursor: pointer;
+      padding: 0;
+    }
+    .btn-link:hover { text-decoration: underline; }
+
+    footer {
+      padding: 18px 0 26px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      background: #020617;
+      border-top: 1px solid rgba(51, 65, 85, 0.9);
+      margin-top: 10px;
+    }
+    footer .footer-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.9);
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 980px) {
+      .hero-inner,
+      .two-col,
+      .contact-grid,
+      .internal-layout {
+        grid-template-columns: 1fr;
+      }
+      .hero-right-card {
+        max-width: 420px;
+        margin: 0 auto;
+      }
+      .card-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .news-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 720px) {
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+      }
+      .nav-links { flex-wrap: wrap; }
+      .section-surface { margin-top: -4px; }
+    }
+    @media (max-width: 640px) {
+      .card-grid,
+      .news-list {
+        grid-template-columns: 1fr;
+      }
+      .sidebar { order: -1; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="container nav">
+      <div class="logo-wrap">
+        <img src="logo-ariha.png" alt="Logo Viện ARiHA" class="logo-img" />
+        <div>
+          <div class="logo-text-main">Viện ARiHA</div>
+          <span class="logo-text-sub">
+            Viện Nghiên cứu Ứng dụng Khoa học Sức khỏe &amp; Lão hóa
+          </span>
+        </div>
+      </div>
+      <nav class="nav-links">
+        <a href="#home">Trang chủ</a>
+        <a href="#about">Giới thiệu</a>
+        <a href="#research">Nghiên cứu</a>
+        <a href="#training">Đào tạo &amp; Hội thảo</a>
+        <a href="#publications">Ấn phẩm</a>
+        <a href="#contact">Liên hệ</a>
+        <!-- Mở trang internal.html thay vì scroll -->
+        <button class="btn-login" onclick="window.location.href='internal.html'">
+          Nội bộ ARiHA
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main id="home">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div>
+          <div class="hero-badge-top">
+            <span class="hero-badge-dot"></span>
+            Nền tảng nghiên cứu – đào tạo – dữ liệu về lão khoa
+          </div>
+          <h1 class="hero-title">
+            Kết nối <span>khoa học</span> cho một tuổi già
+            <span>năng động &amp; khỏe mạnh</span>
+          </h1>
+          <p class="hero-subtitle">
+            ARiHA tập trung vào nghiên cứu ứng dụng, chuyển giao công nghệ và đào tạo
+            trong lĩnh vực lão khoa, trí tuệ nhân tạo y tế, y học tái tạo và mô hình bệnh viện lão khoa.
+          </p>
+          <div class="hero-badges">
+            <span class="badge">Nghiên cứu lão khoa</span>
+            <span class="badge">AI &amp; phân tích dữ liệu</span>
+            <span class="badge">Y học tái tạo</span>
+            <span class="badge">Đào tạo liên tục</span>
+          </div>
+          <div class="hero-actions">
+            <button class="btn-primary" onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+              ⭑ Giới thiệu về Viện
+            </button>
+            <!-- Nút này cũng sang internal.html -->
+            <button class="btn-secondary" onclick="window.location.href='internal.html'">
+              Xem dashboard nội bộ
+            </button>
+          </div>
+          <div class="hero-stats">
+            <div class="hero-stat-item">
+              <div class="hero-stat-number">20+</div>
+              <div>Đề tài nghiên cứu<br/>về người cao tuổi</div>
+            </div>
+            <div class="hero-stat-item">
+              <div class="hero-stat-number">15+</div>
+              <div>Hội thảo &amp; khóa đào tạo<br/>mỗi năm</div>
+            </div>
+            <div class="hero-stat-item">
+              <div class="hero-stat-number">NCKH</div>
+              <div>Tích hợp vào hệ sinh thái<br/>Bệnh viện Thống Nhất</div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="hero-right-card">
+            <div class="hero-image-wrap">
+              <img src="tongquannguoibenhcaotuoi.png" alt="Tổng quan người bệnh cao tuổi">
+              <div class="hero-image-tag">Màn hình tổng quan dữ liệu bệnh nhân cao tuổi</div>
+            </div>
+            <div class="hero-card-title">
+              <span>🔬</span> Nền tảng dữ liệu lão khoa &amp; nghiên cứu ứng dụng
+            </div>
+            <p class="hero-card-text">
+              Kết nối đề tài, hội thảo, bài báo và dữ liệu nghiên cứu trên một giao diện
+              trực quan, hỗ trợ ra quyết định lâm sàng và quản lý chất lượng.
+            </p>
+            <div class="hero-chip-row">
+              <span class="hero-chip">Dashboard theo đơn vị &amp; chuyên ngành</span>
+              <span class="hero-chip">Kết nối Google Sheets / HIS / LIS</span>
+              <span class="hero-chip">Hỗ trợ phân tích thống kê cơ bản</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Trụ cột hoạt động -->
+    <section>
+      <div class="container section-surface">
+        <div class="pill">Trụ cột hoạt động</div>
+        <h2 class="section-title">Hệ sinh thái hoạt động của ARiHA</h2>
+        <p class="section-sub">
+          Tập trung vào nghiên cứu, đào tạo, hợp tác và công bố khoa học trong lĩnh vực lão hóa &amp; sức khỏe người cao tuổi.
+        </p>
+        <!-- JS sẽ sinh card từ Google Sheets -->
+        <div class="card-grid" id="ecosystem-grid">
+          <div style="font-size:0.85rem;color:#64748b;">Đang tải dữ liệu...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Giới thiệu & Lĩnh vực nghiên cứu -->
+    <section id="about">
+      <div class="container two-col">
+        <div class="block-soft" id="gioithieu-block">
+          <div class="pill">Giới thiệu</div>
+          <h2 class="section-title" id="gioithieu-title" style="font-size:1.1rem;">Viện ARiHA – Sứ mệnh &amp; tầm nhìn</h2>
+          <p class="section-sub" id="gioithieu-sub">
+            Trung tâm nghiên cứu – đào tạo – tư vấn chuyên sâu về lão khoa &amp; sức khỏe người cao tuổi.
+          </p>
+          <p id="gioithieu-text" style="margin-bottom:8px;">
+            Viện Nghiên cứu Ứng dụng Khoa học Sức khỏe &amp; Lão hóa (ARiHA) được thành lập với mục tiêu
+            đồng hành cùng Bệnh viện Thống Nhất trong chiến lược trở thành bệnh viện lão khoa toàn diện hạng đặc biệt,
+            gắn nghiên cứu khoa học với thực hành lâm sàng.
+          </p>
+          <ul class="list" id="gioithieu-list">
+            <li><strong>Sứ mệnh:</strong> Nâng cao chất lượng sống người cao tuổi bằng nghiên cứu, ứng dụng và đào tạo.</li>
+            <li><strong>Tầm nhìn:</strong> Trở thành viện nghiên cứu lão khoa dẫn đầu khu vực.</li>
+            <li><strong>Giá trị cốt lõi:</strong> Khoa học – Nhân văn – Hợp tác – Đổi mới.</li>
+          </ul>
+        </div>
+
+        <div id="research" class="block-soft">
+          <div class="pill">Lĩnh vực ưu tiên</div>
+          <h2 class="section-title" id="linhvuc-title" style="font-size:1.1rem;">Nhóm nghiên cứu trọng tâm</h2>
+          <p class="section-sub" id="linhvuc-sub">
+            Phát triển các cụm nghiên cứu xoay quanh người cao tuổi, bệnh mạn tính và chuyển đổi số y tế.
+          </p>
+          <div id="linhvuc-tags" style="margin-bottom:6px;">
+            <span class="tag">Chăm sóc toàn diện người cao tuổi</span>
+            <span class="tag">Quản lý bệnh mạn tính</span>
+            <span class="tag">Sa sút trí tuệ &amp; suy giảm nhận thức</span>
+            <span class="tag">Y học tái tạo &amp; phục hồi</span>
+            <span class="tag">AI &amp; dữ liệu y tế</span>
+            <span class="tag">Mô hình bệnh viện lão khoa</span>
+          </div>
+          <p id="linhvuc-text" style="font-size:0.85rem;">
+            Web app có thể mở rộng thành hồ sơ số cho từng nhóm nghiên cứu: đề tài thành viên, tiến độ,
+            công bố, chỉ số tác động, kết nối với dashboard chất lượng &amp; an toàn người bệnh.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Đào tạo & Ấn phẩm -->
+    <section id="training">
+      <div class="container two-col">
+        <div class="block-soft" id="daotao-block">
+          <div class="pill">Đào tạo &amp; hội thảo</div>
+          <h2 class="section-title" id="daotao-title" style="font-size:1.1rem;">Chương trình đào tạo &amp; sinh hoạt khoa học</h2>
+          <p class="section-sub" id="daotao-sub">
+            Thiết kế các đường dẫn học tập và sinh hoạt khoa học cho nhân viên y tế trong lĩnh vực lão khoa.
+          </p>
+          <ul class="list" id="daotao-list">
+            <li>Khóa ĐTLT về khám, chăm sóc người cao tuổi đa bệnh lý.</li>
+            <li>Hội thảo lão khoa định kỳ, hội nghị nguyên lão &amp; lão hóa.</li>
+            <li>Sinh hoạt khoa học chuyên đề theo từng chủ đề: sa sút trí tuệ, té ngã, suy dinh dưỡng…</li>
+          </ul>
+        </div>
+
+        <div id="publications" class="block-soft">
+          <div class="pill">Ấn phẩm khoa học</div>
+          <h2 class="section-title" id="anpham-title" style="font-size:1.1rem;">Tạp chí &amp; công bố khoa học</h2>
+          <p class="section-sub" id="anpham-sub">
+            Hỗ trợ tác giả từ ý tưởng đến công bố trên tạp chí trong nước và quốc tế.
+          </p>
+          <ul class="list" id="anpham-list">
+            <li>Tạp chí Sức khỏe &amp; Lão hóa: thể lệ, quy trình phản biện, số đã xuất bản.</li>
+            <li>Bài báo, báo cáo chuyên đề, guideline lâm sàng về lão khoa và bệnh mạn tính.</li>
+            <li>Bản tin, tài liệu giáo dục sức khỏe dành cho người cao tuổi và người chăm sóc.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tin tức & sự kiện -->
+    <section>
+      <div class="container section-surface">
+        <div class="pill">Hoạt động nổi bật</div>
+        <h2 class="section-title">Tin tức &amp; sự kiện khoa học</h2>
+        <p class="section-sub">
+          Một số hoạt động tiêu biểu.
+        </p>
+        <div class="news-list" id="news-list">
+          <article class="news-item">
+            <div class="news-header">
+              <h4>Hội thảo chăm sóc toàn diện người cao tuổi</h4>
+              <span class="news-type">Hội thảo</span>
+            </div>
+            <div class="news-meta">Tháng 11/2025 · Hội trường Bệnh viện Thống Nhất</div>
+            <p>Chia sẻ mô hình đa mô thức và vai trò đội ngũ đa ngành trong chăm sóc người cao tuổi.</p>
+          </article>
+          <article class="news-item">
+            <div class="news-header">
+              <h4>Khóa ĐTLT: Lão khoa cơ bản</h4>
+              <span class="news-type">Đào tạo liên tục</span>
+            </div>
+            <div class="news-meta">Tháng 10/2025 · ARiHA &amp; Đào tạo liên tục</div>
+            <p>Trang bị kiến thức cốt lõi về khám, đánh giá, xử trí các hội chứng lão khoa thường gặp.</p>
+          </article>
+          <article class="news-item">
+            <div class="news-header">
+              <h4>Hợp tác nghiên cứu quốc tế về sa sút trí tuệ</h4>
+              <span class="news-type">Hợp tác</span>
+            </div>
+            <div class="news-meta">2025 · Hợp tác đa trung tâm</div>
+            <p>Tăng cường nghiên cứu đa trung tâm, kết nối dữ liệu và chia sẻ kinh nghiệm chăm sóc người bệnh sa sút trí tuệ.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Liên hệ -->
+    <section id="contact" class="contact-section">
+      <div class="container">
+        <div style="margin-bottom:12px;">
+          <div class="pill" style="background:rgba(59,130,246,0.22);color:#e5e7eb;border-color:rgba(191,219,254,0.7);">
+            Liên hệ &amp; kết nối
+          </div>
+          <h2 class="section-title" style="color:#e5e7eb;">Kết nối với ARiHA</h2>
+          <p class="section-sub" style="color:#cbd5f5;">
+            Liên hệ để trao đổi hợp tác nghiên cứu, đề xuất đề tài, hội thảo hoặc chương trình đào tạo liên quan đến lão khoa.
+          </p>
+        </div>
+        <div class="contact-grid">
+          <div class="contact-box">
+            <div class="contact-row">
+              <strong>Địa chỉ:</strong><br/>
+              <span>(Điền địa chỉ cụ thể của Viện tại Bệnh viện Thống Nhất)</span>
+            </div>
+            <div class="contact-row">
+              <strong>Email:</strong> (thêm email Viện)<br/>
+              <strong>Điện thoại:</strong> (thêm số liên hệ)
+            </div>
+            <div class="contact-row">
+              <strong>Giờ làm việc:</strong> Thứ 2 – Thứ 6 (giờ hành chính).
+            </div>
+            <div class="contact-row">
+              <strong>Định hướng hợp tác:</strong><br/>
+              - Nghiên cứu đa trung tâm về lão khoa.<br/>
+              - Chương trình đào tạo &amp; trao đổi học viên / nghiên cứu sinh.<br/>
+              - Phát triển mô hình bệnh viện lão khoa &amp; chuyển đổi số.
+            </div>
+          </div>
+          <div class="contact-box">
+            <form onsubmit="event.preventDefault(); alert('Tạm thời chỉ là demo giao diện 😊');">
+              <label for="name">Họ và tên</label>
+              <input id="name" type="text" placeholder="Nhập họ và tên" />
+              <label for="email">Email</label>
+              <input id="email" type="email" placeholder="Nhập email liên hệ" />
+              <label for="message">Nội dung</label>
+              <textarea id="message" placeholder="Gửi câu hỏi, đề xuất hợp tác hoặc ý tưởng nghiên cứu..."></textarea>
+              <button type="submit" class="btn-primary" style="margin-top:4px; width:100%; justify-content:center;">
+                Gửi thông tin cho ARiHA
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-top">
+        <span>© <span id="year"></span> Viện ARiHA – Viện Nghiên cứu Ứng dụng Khoa học Sức khỏe &amp; Lão hóa.</span>
+        <span>Đơn vị trực thuộc Bệnh viện Thống Nhất.</span>
+      </div>
+      <div>
+        Web app phiên bản demo – sẵn sàng tích hợp cổng nộp đề tài, quản lý công bố, hội thảo, ấn phẩm và báo cáo NCKH.
+      </div>
+    </div>
+  </footer>
+
   <script>
     // Năm hiện tại
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // URL web app Apps Script
-    const NEWS_API_URL = "https://script.google.com/macros/s/AKfycbxCrB92gfCBnpgq7z_rqpy6vnX8ko7OF779arJzhIefniyRVkmk_Jy7UW_mNr4_4766rg/exec";
-    const API_URL = NEWS_API_URL; // dùng chung
+    // URL web app Apps Script (đang dùng cho module hoatdong)
+    const NEWS_API_URL = "https://script.google.com/macros/s/AKfycbw4OTfkS6eNVmDqKeROBnH1qQdz_nHxuEUL16kaCyWK9NZmAyxCR1pBK8ygyfXxUUccBQ/exec";
+    // Dùng chung cho các module khác (trụ cột, giới thiệu,...).
+    const API_URL = NEWS_API_URL;
 
     /* ========= TIN TỨC (module=hoatdong) ========= */
     function renderNews(items) {
@@ -78,22 +1083,21 @@
       try {
         const res  = await fetch(API_URL + "?module=gioithieu");
         const data = await res.json();
-        const info = data.info || data; // hỗ trợ cả 2 kiểu trả về
 
         const titleEl = document.getElementById("gioithieu-title");
         const subEl   = document.getElementById("gioithieu-sub");
         const textEl  = document.getElementById("gioithieu-text");
         const listEl  = document.getElementById("gioithieu-list");
 
-        if (titleEl && info.title)   titleEl.textContent = info.title;
-        if (subEl && info.subtitle)  subEl.textContent   = info.subtitle;
-        if (textEl && info.text)     textEl.textContent  = info.text;
+        if (titleEl) titleEl.textContent = data.title || titleEl.textContent;
+        if (subEl)   subEl.textContent   = data.subtitle || subEl.textContent;
+        if (textEl)  textEl.textContent  = data.text || textEl.textContent;
 
-        if (listEl && (info.suMenh || info.tamNhin || info.giaTri)) {
+        if (listEl && data.suMenh) {
           listEl.innerHTML = `
-            <li><strong>Sứ mệnh:</strong> ${info.suMenh || ""}</li>
-            <li><strong>Tầm nhìn:</strong> ${info.tamNhin || ""}</li>
-            <li><strong>Giá trị cốt lõi:</strong> ${info.giaTri || ""}</li>
+            <li><strong>Sứ mệnh:</strong> ${data.suMenh || ""}</li>
+            <li><strong>Tầm nhìn:</strong> ${data.tamNhin || ""}</li>
+            <li><strong>Giá trị cốt lõi:</strong> ${data.giaTri || ""}</li>
           `;
         }
       } catch (err) {
@@ -106,20 +1110,19 @@
       try {
         const res  = await fetch(API_URL + "?module=linhvuc");
         const data = await res.json();
-        const info = data.info || data;
 
         const titleEl = document.getElementById("linhvuc-title");
         const subEl   = document.getElementById("linhvuc-sub");
         const textEl  = document.getElementById("linhvuc-text");
         const tagsEl  = document.getElementById("linhvuc-tags");
 
-        if (titleEl && info.title)   titleEl.textContent = info.title;
-        if (subEl && info.subtitle)  subEl.textContent   = info.subtitle;
-        if (textEl && info.text)     textEl.textContent  = info.text;
+        if (titleEl) titleEl.textContent = data.title || titleEl.textContent;
+        if (subEl)   subEl.textContent   = data.subtitle || subEl.textContent;
+        if (textEl)  textEl.textContent  = data.text || textEl.textContent;
 
-        if (tagsEl && Array.isArray(info.tags)) {
+        if (tagsEl && Array.isArray(data.tags)) {
           tagsEl.innerHTML = "";
-          info.tags.forEach(t => {
+          data.tags.forEach(t => {
             const span = document.createElement("span");
             span.className = "tag";
             span.textContent = t;
@@ -136,18 +1139,17 @@
       try {
         const res  = await fetch(API_URL + "?module=daotao");
         const data = await res.json();
-        const info = data.info || data;
 
         const titleEl = document.getElementById("daotao-title");
         const subEl   = document.getElementById("daotao-sub");
         const listEl  = document.getElementById("daotao-list");
 
-        if (titleEl && info.title)   titleEl.textContent = info.title;
-        if (subEl && info.subtitle)  subEl.textContent   = info.subtitle;
+        if (titleEl) titleEl.textContent = data.title || titleEl.textContent;
+        if (subEl)   subEl.textContent   = data.subtitle || subEl.textContent;
 
-        if (listEl && Array.isArray(info.items)) {
+        if (listEl && Array.isArray(data.items)) {
           listEl.innerHTML = "";
-          info.items.forEach(txt => {
+          data.items.forEach(txt => {
             const li = document.createElement("li");
             li.textContent = txt;
             listEl.appendChild(li);
@@ -163,18 +1165,17 @@
       try {
         const res  = await fetch(API_URL + "?module=anpham");
         const data = await res.json();
-        const info = data.info || data;
 
         const titleEl = document.getElementById("anpham-title");
         const subEl   = document.getElementById("anpham-sub");
         const listEl  = document.getElementById("anpham-list");
 
-        if (titleEl && info.title)   titleEl.textContent = info.title;
-        if (subEl && info.subtitle)  subEl.textContent   = info.subtitle;
+        if (titleEl) titleEl.textContent = data.title || titleEl.textContent;
+        if (subEl)   subEl.textContent   = data.subtitle || subEl.textContent;
 
-        if (listEl && Array.isArray(info.items)) {
+        if (listEl && Array.isArray(data.items)) {
           listEl.innerHTML = "";
-          info.items.forEach(txt => {
+          data.items.forEach(txt => {
             const li = document.createElement("li");
             li.textContent = txt;
             listEl.appendChild(li);
@@ -182,118 +1183,6 @@
         }
       } catch (err) {
         console.error("Lỗi load AnPham:", err);
-      }
-    }
-
-    /* ========= GỬI FORM LIÊN HỆ (module=contact) ========= */
-    function initContactForm() {
-      const form      = document.getElementById("contact-form");
-      const nameEl    = document.getElementById("name");
-      const emailEl   = document.getElementById("email");
-      const messageEl = document.getElementById("message");
-
-      if (!form) return;
-
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const name    = (nameEl?.value || "").trim();
-        const email   = (emailEl?.value || "").trim();
-        const message = (messageEl?.value || "").trim();
-
-        if (!name || !email || !message) {
-          alert("Vui lòng điền đầy đủ Họ tên, Email và Nội dung.");
-          return;
-        }
-
-        try {
-          const res = await fetch(API_URL, {
-            method: "POST",
-            body: new URLSearchParams({
-              module: "contact",
-              name,
-              email,
-              message
-            })
-          });
-
-          const data = await res.json();
-
-          if (data.success) {
-            alert("ARiHA đã nhận được thông tin của bạn. Xin cảm ơn!");
-            form.reset();
-          } else {
-            console.error("Lỗi backend:", data);
-            alert("Gửi không thành công. Vui lòng thử lại sau.");
-          }
-        } catch (err) {
-          console.error("Lỗi gửi form liên hệ:", err);
-          alert("Có lỗi khi gửi dữ liệu. Vui lòng thử lại.");
-        }
-      });
-    }
-
-    /* ========= HIỆU ỨNG ĐẾM SỐ HERO ========= */
-    function animateCounter(element, duration = 2000) {
-      const rawValue = element.dataset.value;
-      const targetNumber = parseInt(rawValue, 10);
-
-      // Nếu không phải số (ví dụ: "NCKH") → hiển thị nguyên văn, không animate
-      if (isNaN(targetNumber)) {
-        element.textContent = rawValue || "";
-        return;
-      }
-
-      let current = 0;
-      const stepTime = 30; // ms
-      const increment = targetNumber / (duration / stepTime);
-
-      const timer = setInterval(() => {
-        current += increment;
-        if (current >= targetNumber) {
-          clearInterval(timer);
-          element.textContent = targetNumber + "+"; // thêm dấu +
-        } else {
-          element.textContent = Math.floor(current);
-        }
-      }, stepTime);
-    }
-
-    /* ========= HERO STATS (module=hero) ========= */
-    async function loadHeroStats() {
-      const box = document.getElementById("hero-stats");
-      if (!box) return;
-
-      try {
-        const res  = await fetch(API_URL + "?module=hero");
-        const data = await res.json();
-        const items = data.items || [];
-
-        if (!items.length) return;
-
-        box.innerHTML = "";
-        items.forEach(it => {
-          const item = document.createElement("div");
-          item.className = "hero-stat-item";
-
-          item.innerHTML = `
-            <div class="hero-stat-number" data-value="${it.number || ""}">0</div>
-            <div>
-              ${it.line1 || ""}
-              ${it.line2 ? "<br/>" + it.line2 : ""}
-            </div>
-          `;
-
-          box.appendChild(item);
-        });
-
-        // chạy animation sau khi đã render xong
-        document.querySelectorAll(".hero-stat-number").forEach(el => {
-          animateCounter(el);
-        });
-
-      } catch (err) {
-        console.error("Lỗi load HeroStats:", err);
       }
     }
 
@@ -305,8 +1194,7 @@
       loadLinhVuc();
       loadDaoTao();
       loadAnPham();
-      loadHeroStats();
-      initContactForm();
     });
   </script>
-
+</body>
+</html>
