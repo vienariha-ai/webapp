@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8" />
@@ -669,6 +669,41 @@
       padding: 0;
     }
     .btn-link:hover { text-decoration: underline; }
+    
+    .social-links {
+      display: flex;
+      gap: 14px;
+      margin-top: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .social-links a {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(148,163,184,0.35);
+      color: #e5e7eb;
+      font-size: 18px;
+      transition: 0.25s;
+    }
+
+    .social-links img {
+      width: 22px;
+      height: 22px;
+      filter: invert(85%);
+    }
+
+    .social-links a:hover {
+      background: rgba(56,189,248,0.25);
+      border-color: rgba(56,189,248,0.75);
+      transform: translateY(-3px);
+      box-shadow: 0 0 15px rgba(56,189,248,0.4);
+    }
 
     footer {
       padding: 18px 0 26px;
@@ -983,6 +1018,8 @@
               - Chương trình đào tạo &amp; trao đổi học viên / nghiên cứu sinh.<br/>
               - Phát triển mô hình bệnh viện lão khoa &amp; chuyển đổi số.
             </div>
+             <!-- Liên kết mạng xã hội -->
+             <div class="social-links" id="social-links"></div>
           </div>
           <div class="contact-box">
             <form onsubmit="event.preventDefault(); alert('Tạm thời chỉ là demo giao diện 😊');">
@@ -1345,22 +1382,68 @@
         console.error("Lỗi load HeroStats:", err);
       }
     }
+   // Gọi dữ liệu link mạng XH
+    async function loadSocialLinks() {
+    const box = document.getElementById("social-links");
+    if (!box) return;
 
+    try {
+    const res = await fetch(API_URL + "?module=social");
+    const data = await res.json();
+    const items = data.items || [];
+
+    if (!items.length) {
+      box.innerHTML = `<small style="color:#94a3b8">Chưa có liên kết mạng xã hội.</small>`;
+      return;
+    }
+
+    box.innerHTML = "";
+
+    items.forEach(row => {
+      const icon = row.icon || "";
+      const link = row.link || "#";
+
+      let content = "";
+
+      if (icon.startsWith("img:")) {
+        const imgFile = icon.replace("img:", "").trim();
+        content = `<img src="${imgFile}" alt="">`;
+      } else {
+        content = `<i class="${icon}"></i>`;
+      }
+
+      const a = document.createElement("a");
+      a.href = link;
+      a.target = "_blank";
+      a.innerHTML = content;
+      box.appendChild(a);
+    });
+
+  } catch (err) {
+    console.error("Lỗi load social:", err);
+    box.innerHTML = `<small style="color:#ffb4b4">Không tải được dữ liệu.</small>`;
+  }
+}
+    
     // Gọi tất cả khi trang load
-   window.addEventListener("load", () => {
-    loadNews();
-    loadEcosystem();
-    loadGioiThieu();
-    loadLinhVuc();
-    loadDaoTao();
-    loadAnPham();   // vẫn giữ dòng này
-    loadHeroStats();
-  initContactForm && initContactForm();
+ window.addEventListener("load", () => {
+  loadNews();
+  loadEcosystem();
+  loadGioiThieu();
+  loadLinhVuc();
+  loadDaoTao();
+  loadAnPham();
+  loadHeroStats();
+  loadSocialLinks();   // <-- thêm dòng này
 });
+
+
+ 
 
   </script>
 </body>
 </html>
+
 
 
 
