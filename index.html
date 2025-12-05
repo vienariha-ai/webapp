@@ -774,7 +774,7 @@
               Xem dashboard nội bộ
             </button>
           </div>
-          <div class="hero-stats">
+          <div class="hero-stats" id="hero-stats">
             <div class="hero-stat-item">
               <div class="hero-stat-number">20+</div>
               <div>Đề tài nghiên cứu<br/>về người cao tuổi</div>
@@ -1224,18 +1224,47 @@
 	 }
         });
       }
-    // Gọi tất cả khi trang load
-    window.addEventListener("load", () => {
- 	 loadNews();
-  	loadEcosystem();
-  	loadGioiThieu();
-  	loadLinhVuc();
-  	loadDaoTao();
- 	 loadAnPham();
- 	 initContactForm();   // <--- thêm dòng này
-    });
+    /* ========= HERO STATS (module=hero) ========= */
+	async function loadHeroStats() {
+		const box = document.getElementById("hero-stats");
+		  if (!box) return;
+		  try {
+    		const res  = await fetch(API_URL + "?module=hero");
+    		const data = await res.json();
+    		const items = data.items || [];
 
+   		    if (!items.length) return;
+
+   		 	box.innerHTML = "";
+   		 	items.forEach(it => {
+  		    	const item = document.createElement("div");
+    		  	item.className = "hero-stat-item";
+     		 	item.innerHTML = `
+   			     <div class="hero-stat-number">${it.number || ""}</div>
+   			     <div>
+  			        ${it.line1 || ""}
+    			    ${it.line2 ? "<br/>" + it.line2 : ""}
+    		    </div>
+ 		     `;
+   		   box.appendChild(item);
+  		  });
+	  } catch (err) {
+    	console.error("Lỗi load HeroStats:", err);
+ 	 }
+	}
+
+	  // Gọi tất cả khi trang load
+	  window.addEventListener("load", () => {
+		loadNews();
+ 		loadEcosystem();
+  		loadGioiThieu();
+  		loadLinhVuc();
+  		loadDaoTao();
+  		loadAnPham();
+  		loadHeroStats();   // <--- mới
+    });
   </script>
 </body>
 </html>
+
 
